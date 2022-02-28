@@ -1,14 +1,15 @@
-function errorHandler(res) {
-    const headers = {
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization, Content-Length, X-Requested-With',
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'PATCH, POST, GET, OPTIONS, DELETE',
-        'Content-Type': 'application/json'
-    };
-    res.writeHead(400, headers);
+const headers = require('./headers');
+
+const errorContent = {
+    400: '欄位未填寫正確，或無此id',
+    404: '查無此頁面'
+}
+
+function errorHandler(res, status = 400) {
+    res.writeHead(status, headers);
     res.write(JSON.stringify({
         "status": "false",
-        "message": "欄位未填寫正確，或無此id",
+        "message": errorContent[status],
         "data": []
     }));
     res.end();
